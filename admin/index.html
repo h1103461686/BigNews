@@ -81,21 +81,12 @@
       <!-- 右侧主体内容 -->
       <div class="main" id="main_body"></div>
     </div>
+    <script src="./js/http.js"></script>
     <script>
       $(function() {
-        const htr = localStorage.getItem("token");
-        if (!htr) {
-          alert("无法获取账号，即将还回登录页面");
-          location.href = "./login.html";
-        }
-
-        console.log(htr);
-
         $.ajax({
           type: "get",
           url: "http://192.168.77.36:8080/api/v1/admin/user/info",
-          headers: { Authorization: htr },
-
           success: function(res) {
             console.log(res);
             const nickname = res.data.nickname;
@@ -105,7 +96,6 @@
             $(".user_center_link img").attr("src", userPic);
           }
         });
-        // console.log(htr);
       });
     </script>
   </body>
