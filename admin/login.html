@@ -46,6 +46,9 @@
           const pass = $(".input_pass")
             .val()
             .trim();
+          if (txt === "" || pass === "") {
+            alert("用户名或密码不能为空");
+          }
           $.post(
             "http://192.168.77.36:8080/api/v1/admin/user/login",
             {
