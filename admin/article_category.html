@@ -35,7 +35,7 @@
                         <td>奇趣事</td>
                         <td>funny</td>
                         <td class="text-center">
-                            <a href="javascript:void(0)" data-toggle="modal" class=" btn btn-info btn-xs">编辑</a>
+                            <a href="javascript:void(0)" data-toggle="modal" data-target='#exampleModal' class=" btn btn-info btn-xs">编辑</a>
                             <a href="javascript:void(0)" class="btn btn-danger btn-xs">删除</a>
                         </td>
                     </tr>
@@ -44,7 +44,7 @@
                     <tr>
                         <td colspan="3" class="text-center">
                             <a href="javascript:void(0)" class="btn btn-success" id="xinzengfenlei" data-toggle="modal"
-                                data-target="#myModal">新增分类</a>
+                                data-target="#exampleModal">新增分类</a>
                         </td>
                     </tr>
                 </tfoot>
@@ -82,9 +82,149 @@
     </div>
   </div>
 </div>
+<button
+      type="button"
+      class="btn btn-primary btn-lg"
+      data-toggle="modal"
+      data-target="#myModal1"
+      style="display: none;"
+    ></button>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal1"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              关闭
+            </button>
     <script src="./js/http.js"></script>
     <script>
+       
+        $(function(){
+        function shujv(){ $.ajax({
+            type:'get',
+            url:ursl.category_list,
+            success:function(res){
+              console.log(res);
+              
+             const liebiao=res.data.map(function(item){
+                    return  ` <tr>
+                        <td>${item.name}</td>
+                        <td>${item.slug}</td>
+                        <td class="text-center">
+                            <a  data-id=${item.id} data-toggle="modal" data-target='#exampleModal' class=" btn btn-info btn-xs">编辑</a>
+                            <a  data-id=${item.id} class="btn btn-danger btn-xs">删除</a>
+                        </td>
+                    </tr>`                          
+                })
+                $("tbody").html(liebiao.join(''))
+            }
+        })} ;
+        shujv();
+        $("#exampleModal").on("show.bs.modal",function(e){
+          const str=$(e.relatedTarget).text();
+          
+          if(str==='编辑'){
+            $(".btn-primary").text('编辑')
+          }else{
+            $("#recipient-name").val('');
+                  $("#message-text").val('');
+            $(".btn-primary").text('新增')
+            $(".btn-primary").on('click',function(){
+              if($(".btn-primary").eq(1).text()==='新增'){
+                const recipient=$("#recipient-name").val();
+              const message=  $("#message-text").val();
+              if(recipient===''||message===''){
+                $("#myModal1 .modal-body").html('分类名称或分类别名为空');
+                $("#myModal1").modal({ keyboard: true });
+                return
+              }
+              $.ajax({
+                type:"post",
+                url:ursl.category_add,
+                data:{
+                  name:recipient,
+                  slug:message
+                },
+                success:function(res){
+                  location.reload()
+                }
+              })}
+              
+            })
+          }                 
+        });
+        $("tbody").on('click','.btn-info',function(item){
+          const idx=$(this).attr('data-id');
+          $.ajax({
+            type:'get',
+            data:{id:idx},
+            url:ursl.category_search,
+            success:function(res){       
+              $("#recipient-name").val(res.data[0].name);
+                  $("#message-text").val(res.data[0].slug);
+            }
+          })
+          $(".btn-primary").on('click',function(){          
+            if($(".btn-primary").eq(1).text()==='编辑'){
+             
+              const recipient=$("#recipient-name").val();
+              const message=  $("#message-text").val();
+              if(recipient===''||message===''){
+                $("#myModal1 .modal-body").html('分类名称或分类别名为空');
+                $("#myModal1").modal({ keyboard: true });
+                return
+              }
+              $.ajax({
+                type:"post",
+                url:ursl.category_edit,
+                data:{
+                  id:idx,
+                  name:recipient,
+                  slug:message
+                },
+                success:function(res){
+          location.reload()
+                }
+              })}
+            })
+          console.log(idx);
+          
+        })
+    $("tbody").on('click','.btn-danger',function(item){
+      const idx=$(this).attr('data-id');
+      $(this).parents('tr').remove();
+      $.ajax({
+        type:'post',
+        data:{id:idx},
+        url:ursl.category_delete,
+        success:function(res){
+          $("#myModal1 .modal-body").html(res.msg)
+          $("#myModal1").modal({ keyboard: true })
+        }
+      })
+    })
+})
 
-        //  $("#exampleModal").modal({ keyboard: true })
     </script>
 </html>

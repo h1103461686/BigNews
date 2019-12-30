@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/iconfont.css" />
     <link rel="stylesheet" href="css/main.css" />
     <script src="./libs/jquery-1.12.4.min.js"></script>
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
   </head>
 
   <body>
@@ -110,6 +111,46 @@
         </form>
       </div>
     </div>
+    <button
+      type="button"
+      class="btn btn-primary btn-lg"
+      data-toggle="modal"
+      data-target="#myModal"
+      style="display: none;"
+    ></button>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              关闭
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="./js/http.js"></script>
     <script>
       $.ajax({
@@ -124,6 +165,20 @@
 
           $("#inputEmail4").val(res.data.password);
         }
+      });
+      $("#exampleInputFile").change(function() {
+        // console.log(files);
+
+        const file = this.files[0];
+        if (file) {
+          const url = window.URL.createObjectURL(file);
+          console.log(url);
+
+          $(".user_pic").attr("src", url);
+        }
+      });
+      $(".user_pic").click(function() {
+        $("#exampleInputFile").trigger("click");
       });
       $("#form").submit(function(e) {
         e.preventDefault();
@@ -143,7 +198,13 @@
             password: password
           },
           success: function(res) {
-            console.log(res);
+            $("#myModal .modal-body").html(res.msg);
+            $("#myModal").modal({ keyboard: true });
+            console.log(parent.$("body"));
+            
+            parent.$(".user_info span").html("欢迎回家  " + nickname);
+            parent.$(".user_info img").attr("src", userPic);
+            parent.$(".user_center_link img").attr("src", userPic);
           }
         });
       });
