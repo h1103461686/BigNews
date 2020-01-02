@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./libs/jedate/css/jeDate-test.css" />
+    <link rel="stylesheet" href="./libs/jedate/css/jedate.css" />
+    <script src="./libs/jquery-1.12.4.min.js"></script>
+    <script src="./libs/jedate/js/jedate.js"></script>
+  </head>
+  <body>
+    <input
+      class="dateinput dateicon"
+      id="test1"
+      type="text"
+      placeholder="YYYY年MM月DD日 hh:mm:ss"
+      readonly
+    />
+    <input
+      class="dateinput dateicon mr25"
+      id="texthms"
+      type="text"
+      placeholder="hh:mm:ss"
+      readonly
+    />
+    <script type="text/javascript">
+      //点击显示（YYYY年MM月DD日 hh:mm:ss）格式
+      jeDate("#ymd01", {
+        isinitVal: true,
+        festival: true,
+        format: "YYYY年MM月DD日 hh:mm:ss"
+      });
+
+      //点击显示（YYYY年MM月DD日 hh:mm）格式
+      jeDate("#ymd02", {
+        format: "YYYY年MM月DD日 hh:mm",
+        isTime: true,
+        festival: true,
+        minDate: "2014-09-19 00:00:00"
+      });
+
+      //点击显示 YYYY年格式
+      jeDate("#ymnian", {
+        isinitVal: true,
+        format: "YYYY年"
+      });
+
+      //点击显示 时分秒（hh:mm:ss）格式
+      jeDate("#hm01", {
+        isinitVal: true,
+        format: "hh:mm:ss"
+      });
+
+      //点击显示 时分（hh:mm）格式
+      jeDate("#hm02", {
+        format: "hh:mm"
+      });
+    </script>
+  </body>
+</html>
