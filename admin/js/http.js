@@ -11,7 +11,7 @@
       }
     }
   });
-  const baseURL = "http://192.168.77.43:8080/api/v1";
+  const baseURL = "http://192.168.77.33:8080/api/v1";
   const ursl = {
     baseURL: baseURL, //基地址
     user_login: baseURL + "/admin/user/login", //用户登录
